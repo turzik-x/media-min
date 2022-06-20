@@ -73,7 +73,8 @@ def media_convert(filename_in):
         et.execute(*["-overwrite_original", "-TagsFromFile", filename_in,"-All:All", filename_out])
         et.set_tags(
             [filename_out],
-            tags={"Keywords": [f"reduced-{ratio}-times"]}
+            tags={"Keywords": [f"reduced-{ratio}-times"]},
+            params=[ "-overwrite_original"]
         )
         os.remove(filename_in)
         os.rename(filename_out,filename_in)

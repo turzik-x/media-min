@@ -9,7 +9,7 @@ import exiftool
 import logging
 
 def print_l(message):
-  # logging.info(message)
+  #print(message)
   pass
 
 def human_readable_size(size, decimal_places=1):
@@ -22,11 +22,11 @@ def human_readable_size(size, decimal_places=1):
 def get_keywords(filename):
     with  exiftool.ExifToolHelper() as exif:
       meta = exif.get_tags(filename,tags=["Keywords"])[0]
-      print_l("exif")
-      print_l(meta)
-      if "IPTC:Keywords" in meta: 
-        print_l(meta["IPTC:Keywords"])
-        return meta["IPTC:Keywords"]
+      print_l(f"exif:{meta}")
+      for key in meta:
+        if "Keywords" in key: 
+          print_l(meta[key])
+          return meta[key]
 
 def set_keyword(filename,value):
   with exiftool.ExifToolHelper() as et:
@@ -55,8 +55,9 @@ def media_convert_base(filename_in):
 
 def media_convert(filename_in):
    keyword =  get_keywords(filename_in)
-   if  "reduced-" in keyword:
-      print(f"File has keyword '{keyword}'. Skipping this file.")
+
+   if  (keyword!=None) and ("reduced-" in keyword):
+      print(f"Converting {filename_in} ... File has keyword '{keyword}'. Skipping this file.")
       return
    
    filesize_in = os.path.getsize(filename_in)
@@ -84,8 +85,11 @@ def media_convert(filename_in):
        with exiftool.ExifToolHelper() as et:
          et.set_tags(
             [filename_in],
-            tags={"Keywords": [f"reduced-{0}-times"]}
-        )
+            tags={"Keywords": [f"reduced-{0}-times"]},
+            params=[ "-overwrite_original"]
+         )
+       os.remove(filename_out)
+
 
 
 

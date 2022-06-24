@@ -92,7 +92,7 @@ def media_convert(filename_in):
 
 
 def foldermedia_convert(folderPath):
-  
+  pass  
 
 
 
@@ -100,4 +100,5 @@ def main(argv):
     media_convert(argv[1])
     pass
 
-main(sys.argv)
+if __name__=="__main__":
+  main(sys.argv)

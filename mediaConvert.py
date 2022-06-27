@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 from cmath import log
-from distutils import extension
 from email.errors import FirstHeaderLineIsContinuationDefect
 import sys
 import ffmpeg

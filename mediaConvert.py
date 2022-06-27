@@ -2,11 +2,13 @@
 
 from cmath import log
 from distutils import extension
+from email.errors import FirstHeaderLineIsContinuationDefect
 import sys
 import ffmpeg
 import os
 import exiftool
 import logging
+import glob
 
 def print_l(message):
   #print(message)
@@ -91,14 +93,20 @@ def media_convert(filename_in):
        os.remove(filename_out)
 
 
+mediaExrensions = [".jpg",".mkv",".mp4",".avi"]
+
 def foldermedia_convert(folderPath):
-  pass  
-
-
+  print (f"Processing media files in '{folderPath}' ...")
+  files = [f for f in  glob.glob(folderPath) if os.path.isfile(f) ] 
+  for file in files:
+      if os.path.splitext(file)[1] in mediaExrensions:
+        media_convert(file)
 
 def main(argv):
-    media_convert(argv[1])
-    pass
-
+    if (len(argv)>1):
+      foldermedia_convert(argv[1])
+    else:
+      foldermedia_convert("*")
+    
 if __name__=="__main__":
   main(sys.argv)
